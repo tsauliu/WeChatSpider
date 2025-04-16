@@ -50,14 +50,14 @@ time.sleep(2)
 
 channels=main_window.descendants(control_type="ListItem")
 # 将按钮文本写入外部文件
-with open("channels.txt", "w", encoding="utf-8") as f:
+with open("channels.csv", "w", encoding="utf-8") as f:
     for channel in channels:
         f.write(channel.window_text() + "\n")
 
 articles = main_window.descendants(control_type="Pane")
 
 # 若只要控件名列表
-with open("articles.txt", "w", encoding="utf-8") as f:
+with open("articles.csv", "w", encoding="utf-8") as f:
     for article in articles:
         text=article.window_text()
         if len(text)>=5:
