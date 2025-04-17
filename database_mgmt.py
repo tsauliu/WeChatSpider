@@ -64,6 +64,7 @@ if __name__ == '__main__':
     setup_database()
     # Read the articles table into a DataFrame and print it
     articles_df = read_articles_to_dataframe()
+    articles_df
     # if articles_df is not None:
     #     # print("\nArticles DataFrame:")
     #     # print(articles_df)

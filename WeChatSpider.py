@@ -11,8 +11,8 @@ from database_mgmt import read_articles_to_dataframe,setup_database
 setup_database()
 os.makedirs("./articles", exist_ok=True)
 
-print("Starting in 10 seconds...please move your mouse alway")
-time.sleep(10)
+print("Starting in 3 seconds...please move your mouse alway")
+time.sleep(3)
 print("Starting to scrape data now!")
 
 main_window = open_wechat()
@@ -43,7 +43,13 @@ def scrape_channel(channel_scraped):
                 print(f"Scraping article {article_title}...")
                 article.click_input()
                 time.sleep(3)
-                scrape_url_to_md(EdgeDriver, "./articles",channel_scraped,article_title)
+                result=scrape_url_to_md(EdgeDriver, "./articles",channel_scraped,article_title)
+                if not result:
+                    main_window.type_keys("{DOWN}")
+                    main_window.type_keys("{DOWN}")
+                    article.click_input()
+                    time.sleep(3)
+                    result=scrape_url_to_md(EdgeDriver, "./articles",channel_scraped,article_title)
                 time.sleep(2)
                 first_article_scraped=True
 
@@ -51,6 +57,7 @@ def scrape_channel(channel_scraped):
             if article_count>=update_articles_for_each_channel:
                 break
             time.sleep(1)
+            main_window.type_keys("{DOWN}")
             # mouse.scroll(coords=get_mouse_position(), wheel_dist=-1)
     
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
@@ -63,7 +70,8 @@ def scrape_channel(channel_scraped):
 channels_first=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
 first_channel=channels_first[3]
 first_channel.click_input()
-# mouse.scroll(coords=get_mouse_position(), wheel_dist=10)
+main_window.type_keys("{PGUP}")
+main_window.type_keys("{PGUP}")
 channels_first=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
 channels_first=[channel.window_text() for channel in channels_first]
 print(channels_first)
@@ -75,9 +83,9 @@ for channel_scraped in channels_first:
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
     child_window.click_input()
     time.sleep(1)
-    # mouse.scroll(coords=get_mouse_position(), wheel_dist=-1)
+    main_window.type_keys("{DOWN}")
 
-# mouse.scroll(coords=get_mouse_position(), wheel_dist=-3)
+main_window.type_keys("{PGDN}")
 channels_new=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
 channels_new=[channel.window_text() for channel in channels_new]
 newchannels=[channel for channel in channels_new if channel not in channels_first]
@@ -90,4 +98,4 @@ for channel_scraped in newchannels:
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
     child_window.click_input()
     time.sleep(1)
-    # mouse.scroll(coords=get_mouse_position(), wheel_dist=-1)
+    main_window.type_keys("{DOWN}")

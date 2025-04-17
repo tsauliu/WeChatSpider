@@ -1,12 +1,5 @@
 import time
 from pywinauto.application import Application
-import ctypes
-from pywinauto import mouse
-
-def get_mouse_position():
-    point = ctypes.wintypes.POINT()
-    ctypes.windll.user32.GetCursorPos(ctypes.byref(point))
-    return (point.x, point.y)
 
 def open_wechat():
     # 打开微信

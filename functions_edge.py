@@ -76,7 +76,7 @@ def scrape_url_to_md(driver, output_dir, channel_scraped, article_title):
    
     if not 'mp.weixin' in url:
         print(f"Not a WeChat article: {url}")
-        return
+        return False
 
     print(url)
     
@@ -125,6 +125,7 @@ def scrape_url_to_md(driver, output_dir, channel_scraped, article_title):
         time.sleep(1)
         close_mp_weixin_tab(driver)        
         time.sleep(3) 
+        return True
     except Exception as e:
         print(f"Error processing {url}: {str(e)}")
     
