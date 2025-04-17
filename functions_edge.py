@@ -36,17 +36,21 @@ def close_mp_weixin_tab(driver):
             driver.close()
             break
 
-def save_to_db(channel_scraped, article_title, url):
+def save_to_db(channel_scraped, article_title, url, pub_time):
     """Saves scraped article information to the SQLite database."""
+    
+    if not 'mp.weixin' in url:
+        return
+    
     conn = None
     try:
         conn = sqlite3.connect(DB_NAME)
         cursor = conn.cursor()
         # Use INSERT OR IGNORE to avoid errors if the URL already exists (due to UNIQUE constraint)
         cursor.execute("""
-        INSERT OR IGNORE INTO articles (channel_scraped, article_title, url)
-        VALUES (?, ?, ?)
-        """, (channel_scraped, article_title, url))
+        INSERT OR IGNORE INTO articles (channel_scraped, article_title, url, pub_time)
+        VALUES (?, ?, ?, ?)
+        """, (channel_scraped, article_title, url, pub_time))
         conn.commit()
         print(f"Successfully saved article details to database: {url}")
     except sqlite3.Error as e:
@@ -62,6 +66,10 @@ def scrape_url_to_md(driver, output_dir, channel_scraped, article_title):
         if 'mp.weixin' in url:
             break
    
+    if not 'mp.weixin' in url:
+        print(f"Not a WeChat article: {url}")
+        return
+
     print(url)
     
     url_id = url.split('/')[-1]
@@ -99,12 +107,13 @@ def scrape_url_to_md(driver, output_dir, channel_scraped, article_title):
         soup = BeautifulSoup(page_source, 'html.parser')
         text_content = soup.get_text()
         text_content = re.sub(r'\n{3,}', '\n\n', text_content)
+        pub_time = soup.find('em', id='publish_time').text.strip()
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(text_content)
 
         print(f"Successfully saved {url} to {output_path}")
         # Save details to database
-        save_to_db(channel_scraped, article_title, url)
+        save_to_db(channel_scraped, article_title, url, pub_time)
         time.sleep(1)
         close_mp_weixin_tab(driver)        
         time.sleep(3) 

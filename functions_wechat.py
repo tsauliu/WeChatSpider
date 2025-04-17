@@ -30,6 +30,7 @@ def open_wechat():
             print(f"点击'{text}'按钮时出错: {e}")
     return main_window
 
+# main_window=open_wechat()
 # with open("window_controls.txt", "w", encoding="utf-8") as f:
 #     # 临时将标准输出重定向到文件
 #     import sys
