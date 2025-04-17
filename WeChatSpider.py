@@ -7,9 +7,13 @@
 from functions_wechat import *
 from functions_edge import *
 from database_mgmt import read_articles_to_dataframe,setup_database
+from parameters import friday_date
 
 setup_database()
-os.makedirs("./articles", exist_ok=True)
+markdown_dir=f"./data/articles/{friday_date}/"
+os.makedirs(markdown_dir, exist_ok=True)
+
+#%%
 
 print("Starting in 3 seconds...please move your mouse alway")
 time.sleep(3)
@@ -43,13 +47,13 @@ def scrape_channel(channel_scraped):
                 print(f"Scraping article {article_title}...")
                 article.click_input()
                 time.sleep(3)
-                result=scrape_url_to_md(EdgeDriver, "./articles",channel_scraped,article_title)
+                result=scrape_url_to_md(EdgeDriver, markdown_dir,channel_scraped,article_title)
                 if not result:
                     for i in range(4):
                         main_window.type_keys("{DOWN}")
                     article.click_input()
                     time.sleep(3)
-                    result=scrape_url_to_md(EdgeDriver, "./articles",channel_scraped,article_title)
+                    result=scrape_url_to_md(EdgeDriver, markdown_dir,channel_scraped,article_title)
                 time.sleep(2)
                 first_article_scraped=True
 

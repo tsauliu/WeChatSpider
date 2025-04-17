@@ -1,9 +1,12 @@
 #%%
 import sqlite3
 import pandas as pd
+import os
 
+os.makedirs('./data', exist_ok=True)
+os.makedirs('./data/articles', exist_ok=True)
 # Define the database name
-DB_NAME = 'wechat_articles.db'
+DB_NAME = './data/wechat_articles.db'
 
 def setup_database():
     """Initializes the SQLite database and creates the articles table if it doesn't exist."""
