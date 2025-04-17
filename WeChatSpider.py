@@ -17,7 +17,7 @@ print("Starting to scrape data now!")
 
 main_window = open_wechat()
 time.sleep(1)
-update_articles_for_each_channel=30 # 每个公众号抓取30篇文章
+update_articles_for_each_channel=20 # 每个公众号抓取30篇文章
 
 def scrape_channel(channel_scraped):
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
