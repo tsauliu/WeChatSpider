@@ -121,6 +121,8 @@ def scrape_url_to_md(driver, output_dir, channel_scraped, article_title):
         return True
     except Exception as e:
         print(f"Error processing {url}: {str(e)}")
+        close_mp_weixin_tab(driver)
+        time.sleep(3) 
     
 if __name__ == "__main__":
     scrape_url_to_md(EdgeDriver, "./articles", "Example Channel", "Example Title")

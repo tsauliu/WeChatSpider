@@ -82,6 +82,7 @@ for channel_scraped in channels_first:
         continue
     scrape_channel(channel_scraped)
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
+    close_mp_weixin_tab(EdgeDriver)
     child_window.click_input()
     time.sleep(1)
     main_window.type_keys("{DOWN}")
@@ -97,6 +98,7 @@ for channel_scraped in newchannels:
         continue
     scrape_channel(channel_scraped)
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
+    close_mp_weixin_tab(EdgeDriver)
     child_window.click_input()
     time.sleep(1)
     main_window.type_keys("{DOWN}")
