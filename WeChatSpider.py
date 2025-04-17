@@ -17,7 +17,8 @@ time.sleep(1)
 channel_section=main_window.child_window(title="会话列表", control_type="Pane")
 channels=channel_section.descendants(control_type="ListItem")
 
-update_articles_for_each_channel=2
+update_articles_for_each_channel=30 # 每个公众号抓取30篇文章
+
 for channel in channels:
     channel_scraped=channel.window_text()
 
