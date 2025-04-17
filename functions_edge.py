@@ -108,7 +108,10 @@ def scrape_url_to_md(driver, output_dir, channel_scraped, article_title):
         soup = BeautifulSoup(page_source, 'html.parser')
         text_content = soup.get_text()
         text_content = re.sub(r'\n{3,}', '\n\n', text_content)
-        pub_time = soup.find('em', id='publish_time').text.strip()
+        try:
+            pub_time = soup.find('em', id='publish_time').text.strip()
+        except:
+            pub_time = ""
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(text_content)
 
