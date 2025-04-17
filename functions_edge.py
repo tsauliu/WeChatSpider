@@ -19,13 +19,43 @@ from selenium.webdriver.common.by import By
 import time
 import os,re
 from bs4 import BeautifulSoup
+import sqlite3
+from database_mgmt import DB_NAME
 
 edge_options = Options()
 edge_options.add_experimental_option("debuggerAddress", "127.0.0.1:9223")
 service = Service(executable_path="C:/edgedriver_win32/msedgedriver.exe")
 EdgeDriver = webdriver.Edge(service=service, options=edge_options)
 
-def scrape_url_to_md(driver, output_dir):
+def close_mp_weixin_tab(driver):
+    for tab in driver.window_handles:
+        driver.switch_to.window(tab)
+        url=driver.current_url
+        if 'mp.weixin' in url:
+            print(f"Closing tab: {url}")
+            driver.close()
+            break
+
+def save_to_db(channel_scraped, article_title, url):
+    """Saves scraped article information to the SQLite database."""
+    conn = None
+    try:
+        conn = sqlite3.connect(DB_NAME)
+        cursor = conn.cursor()
+        # Use INSERT OR IGNORE to avoid errors if the URL already exists (due to UNIQUE constraint)
+        cursor.execute("""
+        INSERT OR IGNORE INTO articles (channel_scraped, article_title, url)
+        VALUES (?, ?, ?)
+        """, (channel_scraped, article_title, url))
+        conn.commit()
+        print(f"Successfully saved article details to database: {url}")
+    except sqlite3.Error as e:
+        print(f"Database error when saving {url}: {e}")
+    finally:
+        if conn:
+            conn.close()
+
+def scrape_url_to_md(driver, output_dir, channel_scraped, article_title):
     for tab in driver.window_handles:
         driver.switch_to.window(tab)
         url=driver.current_url
@@ -49,11 +79,11 @@ def scrape_url_to_md(driver, output_dir):
         except Exception as e:
             print(f"Error checking existing file {output_path}: {str(e)}")
 
-    # Skip if file already exists
-    if os.path.exists(output_path):
-        print(f"File already exists: {output_path}, skipping...")
-        driver.close()
-        return
+    # Skip if file already exists，验证放在了WeChatSpider.py中，打开url之前
+    # if os.path.exists(output_path):
+    #     print(f"File already exists: {output_path}, skipping...")
+    #     close_mp_weixin_tab(driver)
+    #     return
     
     try:        
         page_source = driver.page_source        
@@ -71,15 +101,16 @@ def scrape_url_to_md(driver, output_dir):
         text_content = re.sub(r'\n{3,}', '\n\n', text_content)
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(text_content)
-        
-        time.sleep(5)        
+
         print(f"Successfully saved {url} to {output_path}")
-        driver.close()
+        # Save details to database
+        save_to_db(channel_scraped, article_title, url)
+        time.sleep(1)
+        close_mp_weixin_tab(driver)        
+        time.sleep(3) 
     except Exception as e:
         print(f"Error processing {url}: {str(e)}")
     
-    
-
 if __name__ == "__main__":
-    scrape_url_to_md(EdgeDriver, "./articles")
+    scrape_url_to_md(EdgeDriver, "./articles", "Example Channel", "Example Title")
 

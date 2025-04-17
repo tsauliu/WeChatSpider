@@ -1,3 +1,4 @@
 *.md
 *.csv
 __pycache__
+*.db
