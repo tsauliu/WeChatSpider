@@ -50,8 +50,7 @@ def scrape_channel(channel_scraped):
                     time.sleep(3)
                     result=scrape_url_to_md(EdgeDriver, markdown_dir,channel_scraped,article_title)
                     if not result:
-                        for i in range(4):
-                            main_window.type_keys("{DOWN}")
+                        main_window.type_keys("{DOWN}")
                         article.click_input()
                         time.sleep(3)
                         result=scrape_url_to_md(EdgeDriver, markdown_dir,channel_scraped,article_title)
@@ -64,7 +63,6 @@ def scrape_channel(channel_scraped):
             except Exception as e:
                 print(f"{channel_scraped}: Error scraping article {article_title}: {e}")
             time.sleep(1)
-            main_window.type_keys("{DOWN}")
             main_window.type_keys("{DOWN}")
     
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
