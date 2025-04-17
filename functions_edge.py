@@ -27,14 +27,6 @@ edge_options.add_experimental_option("debuggerAddress", "127.0.0.1:9223")
 service = Service(executable_path="C:/edgedriver_win32/msedgedriver.exe")
 EdgeDriver = webdriver.Edge(service=service, options=edge_options)
 
-# clean tabs before starting
-for tab in EdgeDriver.window_handles:
-    EdgeDriver.switch_to.window(tab)
-    url=EdgeDriver.current_url
-    if 'mp.weixin' in url:
-        print(f"Closing tab: {url}")
-        EdgeDriver.close()
-
 def close_mp_weixin_tab(driver):
     for tab in driver.window_handles:
         driver.switch_to.window(tab)
@@ -42,7 +34,8 @@ def close_mp_weixin_tab(driver):
         if 'mp.weixin' in url:
             print(f"Closing tab: {url}")
             driver.close()
-            break
+
+close_mp_weixin_tab(EdgeDriver)
 
 def save_to_db(channel_scraped, article_title, url, pub_time):
     """Saves scraped article information to the SQLite database."""
