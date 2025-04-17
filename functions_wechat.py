@@ -18,7 +18,7 @@ def open_wechat():
     time.sleep(1)
 
     # 简化后的代码：查找并点击包含特定文本的按钮
-    button_texts = ["SessionListItem", "列表模式"]
+    button_texts = ["文件传输助手","SessionListItem", "列表模式"]
     for text in button_texts:
         try:
             for button in main_window.descendants(control_type="Button"):

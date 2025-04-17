@@ -11,17 +11,15 @@ from database_mgmt import read_articles_to_dataframe,setup_database
 setup_database()
 os.makedirs("./articles", exist_ok=True)
 
+print("Starting in 10 seconds...please move your mouse alway")
+time.sleep(10)
+print("Starting to scrape data now!")
+
 main_window = open_wechat()
 time.sleep(1)
-
-channel_section=main_window.child_window(title="会话列表", control_type="Pane")
-channels=channel_section.descendants(control_type="ListItem")
-
 update_articles_for_each_channel=30 # 每个公众号抓取30篇文章
 
-for channel in channels:
-    channel_scraped=channel.window_text()
-
+def scrape_channel(channel_scraped):
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
     child_window.click_input()
     time.sleep(1)
@@ -59,4 +57,37 @@ for channel in channels:
     child_window.click_input()
     mouse.scroll(coords=get_mouse_position(), wheel_dist=-1)
     time.sleep(1)
-    
+
+
+# move to the top of channel list
+channels_first=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
+first_channel=channels_first[3]
+first_channel.click_input()
+mouse.scroll(coords=get_mouse_position(), wheel_dist=10)
+channels_first=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
+channels_first=[channel.window_text() for channel in channels_first]
+print(channels_first)
+
+for channel_scraped in channels_first:
+    if len(channel_scraped)<3:
+        continue
+    scrape_channel(channel_scraped)
+    child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
+    child_window.click_input()
+    time.sleep(1)
+    mouse.scroll(coords=get_mouse_position(), wheel_dist=-1)
+
+mouse.scroll(coords=get_mouse_position(), wheel_dist=-3)
+channels_new=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
+channels_new=[channel.window_text() for channel in channels_new]
+newchannels=[channel for channel in channels_new if channel not in channels_first]
+print(newchannels)
+
+for channel_scraped in newchannels:
+    if len(channel_scraped)<3:
+        continue
+    scrape_channel(channel_scraped)
+    child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
+    child_window.click_input()
+    time.sleep(1)
+    mouse.scroll(coords=get_mouse_position(), wheel_dist=-1)
