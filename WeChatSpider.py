@@ -58,6 +58,7 @@ def scrape_channel(channel_scraped):
                 break
             time.sleep(1)
             main_window.type_keys("{DOWN}")
+            main_window.type_keys("{DOWN}")
             # mouse.scroll(coords=get_mouse_position(), wheel_dist=-1)
     
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
