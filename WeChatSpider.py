@@ -66,7 +66,10 @@ def scrape_channel(channel_scraped):
             main_window.type_keys("{DOWN}")
     
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
-    child_window.click_input()
+    try:
+        child_window.click_input()
+    except:
+        print(f"{channel_scraped}: Error clicking on child window")
     time.sleep(1)
 
 
