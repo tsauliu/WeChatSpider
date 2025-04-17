@@ -34,7 +34,7 @@ def scrape_channel(channel_scraped):
     c1=articles_df['channel_scraped']==channel_scraped
     articles_scraped=articles_df[c1]['article_title'].to_list()
     # loop through the the articles of one channel
-    articles = main_window.descendants(control_type="Pane")
+    articles = child_window.descendants(control_type="Pane")
 
     first_article_scraped=False
     article_count=0
