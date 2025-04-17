@@ -53,7 +53,7 @@ def save_to_db(channel_scraped, article_title, url, pub_time):
         VALUES (?, ?, ?, ?)
         """, (channel_scraped, article_title, url, pub_time))
         conn.commit()
-        print(f"Successfully saved article details to database: {url}")
+        print(f"Successfully saved  details to database {article_title}")
     except sqlite3.Error as e:
         print(f"Database error when saving {url}: {e}")
     finally:
