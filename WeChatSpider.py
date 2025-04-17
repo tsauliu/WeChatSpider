@@ -9,6 +9,7 @@ from functions_edge import *
 from database_mgmt import read_articles_to_dataframe,setup_database
 
 setup_database()
+os.makedirs("./articles", exist_ok=True)
 
 main_window = open_wechat()
 time.sleep(1)
