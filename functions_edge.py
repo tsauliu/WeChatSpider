@@ -115,7 +115,7 @@ def scrape_url_to_md(driver, output_dir, channel_scraped, article_title):
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(text_content)
 
-        print(f"Successfully saved {url} to {output_path}")
+        print(f"Successfully saved {article_title} to {output_path}")
         # Save details to database
         save_to_db(channel_scraped, article_title, url, pub_time)
         time.sleep(1)
