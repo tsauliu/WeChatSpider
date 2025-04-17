@@ -1,2 +1,4 @@
 pywinauto
-selenium 
+selenium
+beautifulsoup4
+pandas 
