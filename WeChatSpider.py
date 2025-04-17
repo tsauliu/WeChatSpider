@@ -40,34 +40,35 @@ def scrape_channel(channel_scraped):
     article_count=0
     for article in articles:
         article_title=article.window_text()
-        if len(article_title)>=5: 
-            if article_title in articles_scraped and first_article_scraped:
-                print(f"Article {article_title} already scraped, skipping...")
-            else:
-                print(f"Scraping article {article_title}...")
-                article.click_input()
-                time.sleep(3)
-                result=scrape_url_to_md(EdgeDriver, markdown_dir,channel_scraped,article_title)
-                if not result:
-                    for i in range(4):
-                        main_window.type_keys("{DOWN}")
+        if len(article_title)>=5:
+            try: 
+                if article_title in articles_scraped and first_article_scraped:
+                    print(f"{channel_scraped}: Article {article_title} already scraped, skipping...")
+                else:
+                    print(f"{channel_scraped}: Scraping article {article_title}...")
                     article.click_input()
                     time.sleep(3)
                     result=scrape_url_to_md(EdgeDriver, markdown_dir,channel_scraped,article_title)
-                time.sleep(2)
-                first_article_scraped=True
+                    if not result:
+                        for i in range(4):
+                            main_window.type_keys("{DOWN}")
+                        article.click_input()
+                        time.sleep(3)
+                        result=scrape_url_to_md(EdgeDriver, markdown_dir,channel_scraped,article_title)
+                    time.sleep(2)
+                    first_article_scraped=True
 
-            article_count+=1
-            if article_count>=update_articles_for_each_channel:
-                break
+                article_count+=1
+                if article_count>=update_articles_for_each_channel:
+                    break
+            except Exception as e:
+                print(f"{channel_scraped}: Error scraping article {article_title}: {e}")
             time.sleep(1)
             main_window.type_keys("{DOWN}")
             main_window.type_keys("{DOWN}")
-            # mouse.scroll(coords=get_mouse_position(), wheel_dist=-1)
     
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
     child_window.click_input()
-    # mouse.scroll(coords=get_mouse_position(), wheel_dist=-1)
     time.sleep(1)
 
 
