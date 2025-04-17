@@ -47,4 +47,12 @@ def open_wechat():
 
 # child_window=main_window.child_window(title="电动内参", control_type="ListItem")
 # child_window.click_input()
-# main_window.type_keys("{PGDN}")
+if __name__ == "__main__":
+    main_window=open_wechat()
+    channels_first=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
+    first_channel=channels_first[3]
+    first_channel.click_input()
+    # Simulate pressing the down arrow key to navigate down in the conversation list
+    main_window.type_keys("{DOWN}")
+    time.sleep(0.5)  # Small delay to allow UI to respond
+    main_window.type_keys("{PGDN}")
