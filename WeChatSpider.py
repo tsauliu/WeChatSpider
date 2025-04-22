@@ -51,7 +51,7 @@ def scrape_channel(channel_scraped):
                     time.sleep(3)
                     result=scrape_url_to_md(EdgeDriver, markdown_dir,channel_scraped,article_title)
                     if not result:
-                        main_window.type_keys("{DOWN}")
+                        main_window.type_keys("{PGDN}")
                         article.click_input()
                         time.sleep(3)
                         result=scrape_url_to_md(EdgeDriver, markdown_dir,channel_scraped,article_title)
