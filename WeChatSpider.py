@@ -38,6 +38,7 @@ def scrape_channel(channel_scraped):
 
     first_article_scraped=False
     article_count=0
+    article_loop_count=0
     for article in articles:
         article_title=article.window_text()
         if len(article_title)>=5:
@@ -64,6 +65,11 @@ def scrape_channel(channel_scraped):
                 print(f"{channel_scraped}: Error scraping article {article_title}: {e}")
             time.sleep(1)
             main_window.type_keys("{DOWN}")
+            article_loop_count+=1
+            if article_loop_count>=3:
+                main_window.type_keys("{PGDN}")
+                article_loop_count=0
+                time.sleep(1)
     
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
     try:
