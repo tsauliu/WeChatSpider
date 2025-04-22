@@ -22,6 +22,7 @@ print("Starting to scrape data now!")
 main_window = open_wechat()
 time.sleep(1)
 update_articles_for_each_channel=20 # 每个公众号抓取30篇文章
+channels_done=[]
 
 def scrape_channel(channel_scraped):
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
@@ -89,28 +90,32 @@ channels_first=main_window.child_window(title="会话列表", control_type="Pane
 channels_first=[channel.window_text() for channel in channels_first]
 print(channels_first)
 
-for channel_scraped in channels_first:
-    if len(channel_scraped)<3:
-        continue
-    scrape_channel(channel_scraped)
-    child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
-    close_mp_weixin_tab(EdgeDriver)
-    child_window.click_input()
-    time.sleep(1)
-    main_window.type_keys("{DOWN}")
+for i in range(5):
+    print(f"Scraping the {i+1}th time")
+    for channel_scraped in channels_first:
+        if len(channel_scraped)<3 or channel_scraped in channels_done:
+            continue
+        scrape_channel(channel_scraped)
+        channels_done.append(channel_scraped)
+        child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
+        close_mp_weixin_tab(EdgeDriver)
+        child_window.click_input()
+        time.sleep(1)
+        main_window.type_keys("{DOWN}")
 
-main_window.type_keys("{PGDN}")
-channels_new=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
-channels_new=[channel.window_text() for channel in channels_new]
-newchannels=[channel for channel in channels_new if channel not in channels_first]
-print(newchannels)
+    main_window.type_keys("{PGDN}")
+    channels_new=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
+    channels_new=[channel.window_text() for channel in channels_new]
+    newchannels=[channel for channel in channels_new if channel not in channels_first]
+    print(newchannels)
 
-for channel_scraped in newchannels:
-    if len(channel_scraped)<3:
-        continue
-    scrape_channel(channel_scraped)
-    child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
-    close_mp_weixin_tab(EdgeDriver)
-    child_window.click_input()
-    time.sleep(1)
-    main_window.type_keys("{DOWN}")
+    for channel_scraped in newchannels:
+        if len(channel_scraped)<3 or channel_scraped in channels_done:
+            continue
+        scrape_channel(channel_scraped)
+        channels_done.append(channel_scraped)
+        child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
+        close_mp_weixin_tab(EdgeDriver)
+        child_window.click_input()
+        time.sleep(1)
+        main_window.type_keys("{DOWN}")
