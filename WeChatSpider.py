@@ -81,19 +81,21 @@ def scrape_channel(channel_scraped):
     time.sleep(1)
 
 
-# move to the top of channel list
-channels_first=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
-first_channel=channels_first[3]
-first_channel.click_input()
-main_window.type_keys("{PGUP}")
-main_window.type_keys("{PGUP}")
-channels_first=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
-channels_first=[channel.window_text() for channel in channels_first]
-print(channels_first)
-
 for i in range(10):
     print(f"Scraping the {i+1}th time")
     try:
+        main_window = open_wechat()
+        time.sleep(1)
+        # move to the top of channel list
+        channels_first=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
+        first_channel=channels_first[3]
+        first_channel.click_input()
+        main_window.type_keys("{PGUP}")
+        main_window.type_keys("{PGUP}")
+        channels_first=main_window.child_window(title="会话列表", control_type="Pane").descendants(control_type="ListItem")
+        channels_first=[channel.window_text() for channel in channels_first]
+        print(channels_first)
+
         for channel_scraped in channels_first:
             if len(channel_scraped)<3 or channel_scraped in channels_done:
                 continue
