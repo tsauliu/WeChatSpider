@@ -66,10 +66,10 @@ def scrape_channel(channel_scraped):
             time.sleep(1)
             main_window.type_keys("{DOWN}")
             article_loop_count+=1
-            if article_loop_count>=3:
-                main_window.type_keys("{PGDN}")
-                article_loop_count=0
-                time.sleep(1)
+            # if article_loop_count>=3:
+            #     main_window.type_keys("{PGDN}")
+            #     article_loop_count=0
+            #     time.sleep(1)
     
     child_window=main_window.child_window(title=channel_scraped, control_type="ListItem")
     try:
