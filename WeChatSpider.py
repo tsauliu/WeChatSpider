@@ -91,7 +91,7 @@ channels_first=main_window.child_window(title="会话列表", control_type="Pane
 channels_first=[channel.window_text() for channel in channels_first]
 print(channels_first)
 
-for i in range(5):
+for i in range(10):
     print(f"Scraping the {i+1}th time")
     try:
         for channel_scraped in channels_first:
