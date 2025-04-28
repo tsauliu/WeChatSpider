@@ -30,5 +30,5 @@ while True:
             print(e)
             status_message(f"Error: {e}")
     print(f"Waiting for the next run at {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
-    time.sleep(60)
+    time.sleep(300)
     
