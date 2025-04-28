@@ -10,5 +10,5 @@ while True:
         except Exception as e:
             print(e)
     time.sleep(60)
-    print("Waiting for the next run...")
+    print(f"Waiting for the next run at {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     
