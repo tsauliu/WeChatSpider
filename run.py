@@ -21,7 +21,7 @@ def status_message(msg):
 
 print("Starting the scraper...")
 while True:
-    if datetime.datetime.now().hour in [10,15,22] and datetime.datetime.now().minute < 10:
+    if datetime.datetime.now().hour in [10,17,22] and datetime.datetime.now().minute < 10:
         try:
             status_message(f"Starting the scraper at {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
             daily_scrape()
