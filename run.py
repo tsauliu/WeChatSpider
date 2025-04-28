@@ -9,6 +9,6 @@ while True:
             daily_scrape()
         except Exception as e:
             print(e)
-    time.sleep(60)
     print(f"Waiting for the next run at {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
+    time.sleep(60)
     
