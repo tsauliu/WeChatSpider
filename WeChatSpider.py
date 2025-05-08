@@ -7,10 +7,11 @@
 from functions_wechat import *
 from functions_edge import *
 from database_mgmt import read_articles_to_dataframe,setup_database
-from parameters import friday_date
+from parameters import friday_date,get_friday_date
 
 def daily_scrape():
     setup_database()
+    friday_date=get_friday_date()
     markdown_dir=f"./data/articles/{friday_date}/"
     os.makedirs(markdown_dir, exist_ok=True)
     print("Starting in 3 seconds...please move your mouse alway")
