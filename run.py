@@ -20,8 +20,9 @@ def status_message(msg):
 
 
 print("Starting the scraper...")
+first_run = True
 while True:
-    if datetime.datetime.now().hour in [10,12,17,22] and datetime.datetime.now().minute < 10:
+    if datetime.datetime.now().hour in [10,12,17,22] and datetime.datetime.now().minute < 10 or first_run:
         try:
             status_message(f"Starting the scraper at {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
             daily_scrape()
@@ -29,6 +30,7 @@ while True:
         except Exception as e:
             print(e)
             status_message(f"Error: {e}")
+        first_run = False
     print(f"Waiting for the next run at {datetime.datetime.now().hour}:{datetime.datetime.now().minute}")
     time.sleep(300)
     
