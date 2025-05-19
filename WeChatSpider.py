@@ -20,7 +20,7 @@ def daily_scrape():
 
     main_window = open_wechat()
     time.sleep(1)
-    update_articles_for_each_channel=20 # 每个公众号抓取30篇文章
+    update_articles_for_each_channel=30 # 每个公众号抓取30篇文章
     channels_done=[]
 
     def scrape_channel(channel_scraped):
